@@ -1,0 +1,56 @@
+﻿@model IEnumerable<MII_Media.Models.Friend>;
+
+@{
+    ViewData["Title"] = "ReceiveRequest";
+}
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@*@inject IEnumerable<MII_Media.Models.Post> posts*@
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var tempBio = "Add the bio from Edit Profile";
+}
+
+
+<link href="~/css/Friends.css" rel="stylesheet" />
+
+@*??~/images/@freind.ProfilePicPath "https://bootdey.com/img/Content/avatar/avatar7.png")'*@
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="people-nearby">
+                <div class="nearby-user">
+
+                    @foreach (Friend friend in Model)
+                    {
+                        ApplicationUser friendUser = await UserManager.FindByEmailAsync(friend.User2);
+                        var photoPath = "~/images/" + ("avatar.png");
+
+                        <div class="row">
+                            <div class="col-md-2 col-sm-2">
+                                <img src="~/images/@friendUser.ProfilePicPath" alt="User" class="profile-photo-lg">
+                            </div>
+                            <div class="col-md-7 col-sm-7">
+                                <h5><a href="#" class="profile-link">@friendUser.FirstName  @friendUser.LastName</a></h5>
+                                <p>@friendUser.Email</p>
+                                <p class="text-muted">@friendUser.DOB</p>
+                            </div>
+                            <div class="col-md-3 col-sm-3">
+                                <a class="btn btn-primary btn-lg active" asp-controller="Friend" asp-action="ReceiveRequestConfirmed"
+                                   asp-route-id="@friend.FriendId">Confirm</a>
+
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
